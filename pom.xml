@@ -13,6 +13,7 @@
         <module>consumer</module>
         <module>provider</module>
         <module>Jy-rpc-easy</module>
+        <module>Jy-rpc-core</module>
     </modules>
 
     <properties>

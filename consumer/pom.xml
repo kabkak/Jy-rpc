@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangying</groupId>
-            <artifactId>Jy-rpc-easy</artifactId>
+            <artifactId>Jy-rpc-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

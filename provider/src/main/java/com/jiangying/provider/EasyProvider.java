@@ -1,5 +1,7 @@
 package com.jiangying.provider;
 
+import com.jiangying.Jyrpc.config.RpcApplication;
+import com.jiangying.Jyrpc.config.RpcConfig;
 import com.jiangying.Jyrpc.registry.LocalRegister;
 import com.jiangying.Jyrpc.server.HttpServer;
 import com.jiangying.Jyrpc.server.Impl.VertxHttpServer;
@@ -14,10 +16,10 @@ public class EasyProvider {
      */
     public static void main(String[] args) {
         LocalRegister.register(UserService.class.getName(), UserServiceImpl.class);
-
+        RpcApplication.init();
         //todo 提供服务
         HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(8080);
+        httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
 
     }
 }

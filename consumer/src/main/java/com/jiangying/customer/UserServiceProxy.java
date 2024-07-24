@@ -2,6 +2,8 @@ package com.jiangying.customer;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.jiangying.Jyrpc.config.RpcApplication;
+import com.jiangying.Jyrpc.config.RpcConfig;
 import com.jiangying.Jyrpc.model.RpcRequest;
 import com.jiangying.Jyrpc.model.RpcResponse;
 import com.jiangying.Jyrpc.serializer.Impl.JdkSerializer;
@@ -12,8 +14,10 @@ import com.jiangying.service.UserService;
 import java.io.IOException;
 
 public class UserServiceProxy implements UserService {
+
     @Override
     public User getUser(User user) {
+        RpcApplication.init();
 
         Serializer serializer = new JdkSerializer();
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -25,7 +29,10 @@ public class UserServiceProxy implements UserService {
         try {
             byte[] serialized = serializer.serialize(rpcRequest);
             byte[] result;
-            try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080").body(serialized).execute()) {
+
+            try (HttpResponse httpResponse = HttpRequest.post("http://"+ RpcApplication.getRpcProperties().getServerHost()
+                    +":"+RpcApplication.getRpcProperties().getServerPort())
+                    .body(serialized).execute()) {
                 result = httpResponse.bodyBytes();
             }
             RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);

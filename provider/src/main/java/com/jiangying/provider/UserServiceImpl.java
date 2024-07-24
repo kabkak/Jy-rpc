@@ -15,6 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getString() {
+        System.out.println("nhnhnhnhnhnhnhn");
         return "测试测试测试测试测试测试";
     }
 
