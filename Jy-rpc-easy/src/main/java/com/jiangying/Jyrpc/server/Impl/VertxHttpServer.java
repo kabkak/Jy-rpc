@@ -1,6 +1,7 @@
 package com.jiangying.Jyrpc.server.Impl;
 
 import com.jiangying.Jyrpc.server.HttpServer;
+import com.jiangying.Jyrpc.server.HttpServiceHandler;
 import io.vertx.core.Vertx;
 
 public class VertxHttpServer implements HttpServer {
@@ -15,6 +16,7 @@ public class VertxHttpServer implements HttpServer {
                     .putHeader("content-type", "text/html;charset=utf-8")
                     .end("<h1>你好你好你好你好你好</h1>");
         });
+        httpServer.requestHandler(new HttpServiceHandler());
         httpServer.listen(port, result -> {
             if (result.succeeded()) {
                 System.out.println("Server listening at " + port);

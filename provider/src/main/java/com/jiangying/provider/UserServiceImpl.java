@@ -12,4 +12,11 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public String getString() {
+        return "测试测试测试测试测试测试";
+    }
+
+
 }
