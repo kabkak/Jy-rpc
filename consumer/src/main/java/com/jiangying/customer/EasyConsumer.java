@@ -20,6 +20,5 @@ public class EasyConsumer {
         }else{
             System.out.println("消费者得到用户名字: "+user.getName());
         }
-        System.out.println(userService.getString());
     }
 }

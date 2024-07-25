@@ -8,6 +8,7 @@ import com.jiangying.Jyrpc.model.RpcRequest;
 import com.jiangying.Jyrpc.model.RpcResponse;
 import com.jiangying.Jyrpc.serializer.Impl.JdkSerializer;
 import com.jiangying.Jyrpc.serializer.Serializer;
+import com.jiangying.Jyrpc.serializer.SerializerFactory;
 
 
 import java.io.IOException;
@@ -35,7 +36,8 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 使用JdkSerializer作为序列化工具
-        Serializer serializer = new JdkSerializer();
+        Serializer serializer = SerializerFactory.getSerializer();
+        System.out.println(serializer);
         // 构建RpcRequest对象，包含服务名、方法名、参数类型和参数值
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(method.getDeclaringClass().getName())
@@ -46,8 +48,7 @@ public class ServiceProxy implements InvocationHandler {
 
         // 对RpcRequest进行序列化
         byte[] serialized = serializer.serialize(rpcRequest);
-        // 初始化HTTP地址和端口，默认值为"http://localhost:8080"
-        //todo
+
         RpcConfig rpcProperties = RpcApplication.getRpcProperties();
         serverHost = rpcProperties.getServerHost();
         port = rpcProperties.getServerPort();

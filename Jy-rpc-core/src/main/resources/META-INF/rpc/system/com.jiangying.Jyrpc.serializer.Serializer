@@ -1,0 +1,4 @@
+hessian=com.jiangying.Jyrpc.serializer.Impl.HessianSerializer
+jdk=com.jiangying.Jyrpc.serializer.Impl.JdkSerializer
+Json=com.jiangying.Jyrpc.serializer.Impl.JsonSerializer
+kryo=com.jiangying.Jyrpc.serializer.Impl.KryoSerializer

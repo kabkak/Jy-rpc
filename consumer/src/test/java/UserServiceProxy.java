@@ -1,5 +1,3 @@
-package com.jiangying.customer;
-
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.jiangying.Jyrpc.config.RpcApplication;
@@ -8,6 +6,7 @@ import com.jiangying.Jyrpc.model.RpcRequest;
 import com.jiangying.Jyrpc.model.RpcResponse;
 import com.jiangying.Jyrpc.serializer.Impl.JdkSerializer;
 import com.jiangying.Jyrpc.serializer.Serializer;
+import com.jiangying.Jyrpc.serializer.SerializerFactory;
 import com.jiangying.model.User;
 import com.jiangying.service.UserService;
 
@@ -19,7 +18,7 @@ public class UserServiceProxy implements UserService {
     public User getUser(User user) {
         RpcApplication.init();
 
-        Serializer serializer = new JdkSerializer();
+        Serializer serializer = SerializerFactory.getSerializer();
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(UserService.class.getName())
                 .methodName("getUser")

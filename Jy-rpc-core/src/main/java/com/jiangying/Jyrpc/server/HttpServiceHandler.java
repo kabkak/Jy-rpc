@@ -1,10 +1,12 @@
 package com.jiangying.Jyrpc.server;
 
+import com.jiangying.Jyrpc.config.RpcApplication;
 import com.jiangying.Jyrpc.model.RpcRequest;
 import com.jiangying.Jyrpc.model.RpcResponse;
 import com.jiangying.Jyrpc.registry.LocalRegister;
 import com.jiangying.Jyrpc.serializer.Impl.JdkSerializer;
 import com.jiangying.Jyrpc.serializer.Serializer;
+import com.jiangying.Jyrpc.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -14,8 +16,9 @@ import java.lang.reflect.Method;
 public class HttpServiceHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest httpServerRequest) {
+
         //获得序列化器
-        Serializer serializer = new JdkSerializer();
+        Serializer serializer = SerializerFactory.getSerializer();
         //记录日记
         System.out.println( httpServerRequest.method() + "  " + httpServerRequest.uri());
 
