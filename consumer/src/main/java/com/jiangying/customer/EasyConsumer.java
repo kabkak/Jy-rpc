@@ -10,9 +10,9 @@ import com.jiangying.service.UserService;
 public class EasyConsumer {
     public static void main(String[] args) {
 
-        UserService userService = ServiceProxyFactory.getProxy(UserService.class); // todo 获得代理对象
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
 
-        User user = new User("小张");
+        User user = new User("小江");
         User newUser = userService.getUser(user);
 
         if (newUser == null){

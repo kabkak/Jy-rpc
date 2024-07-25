@@ -1,6 +1,8 @@
 package com.jiangying.Jyrpc.spi;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.StrUtil;
+import com.jiangying.Jyrpc.registry.Register;
 import com.jiangying.Jyrpc.serializer.Serializer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +39,7 @@ public class SpiLoader {
     /**
      * 需要动态加载的接口
      */
-    private static final List<Class<?>> CLASS_LIST = Arrays.asList(Serializer.class);
+    private static final List<Class<?>> CLASS_LIST = Arrays.asList(Serializer.class, Register.class);
 
     /**
      * 保存接口的实现类:  接口名 -> (key, 实现类)
@@ -64,15 +66,21 @@ public class SpiLoader {
 
             for (URL url : resource) {
 
-
-                try (InputStreamReader inputStreamReader = new InputStreamReader(url.openStream()); BufferedReader reader = new BufferedReader(inputStreamReader);) {
+                try (InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
+                     BufferedReader reader = new BufferedReader(inputStreamReader)) {
                     String line;
+                    //为BufferedReader在读取一个完全空白的文件时，会认为文件的第一行是空字符串（""），而不是null。
                     while ((line = reader.readLine()) != null) {
                         String trimmedLine = line.trim();
+                        if (trimmedLine.isBlank() || trimmedLine.charAt(0) == '#') {
+                            continue;
+                        }
                         String[] split = trimmedLine.split("=");
                         keyClassMap.put(split[0], java.lang.Class.forName(split[1]));
                     }
                 } catch (Exception e) {
+
+                    e.printStackTrace();
                     System.out.println("加载 SPI 失败: " + clazz.getName());
                 }
             }

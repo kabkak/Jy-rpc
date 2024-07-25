@@ -3,8 +3,6 @@ package com.jiangying.Jyrpc.config;
 
 import lombok.Data;
 
-//@Component
-//@ConfigurationProperties(prefix = "rpc")
 @Data
 public class RpcConfig {
 

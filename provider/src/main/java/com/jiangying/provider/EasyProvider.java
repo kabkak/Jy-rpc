@@ -5,20 +5,25 @@ import com.jiangying.Jyrpc.config.RpcConfig;
 import com.jiangying.Jyrpc.registry.LocalRegister;
 import com.jiangying.Jyrpc.server.HttpServer;
 import com.jiangying.Jyrpc.server.Impl.VertxHttpServer;
+import com.jiangying.Jyrpc.utils.TimeGetUtil;
 import com.jiangying.service.UserService;
 
 
 public class EasyProvider {
     /**
-     * 简答提供服务
+     * 启动服务器提供服务
      *
      * @param args
      */
     public static void main(String[] args) {
+
         LocalRegister.register(UserService.class.getName(), UserServiceImpl.class);
         RpcApplication.init();
-        //todo 提供服务
+        System.out.println(TimeGetUtil.getTime());
+
+
         HttpServer httpServer = new VertxHttpServer();
+
         httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
 
     }

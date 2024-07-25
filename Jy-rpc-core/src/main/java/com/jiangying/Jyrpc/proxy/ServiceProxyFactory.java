@@ -2,6 +2,8 @@ package com.jiangying.Jyrpc.proxy;
 
 import com.jiangying.Jyrpc.config.RpcApplication;
 import com.jiangying.Jyrpc.config.RpcConfig;
+import com.jiangying.Jyrpc.utils.TimeGetUtil;
+import lombok.Data;
 
 import java.lang.reflect.Proxy;
 
@@ -11,16 +13,17 @@ import java.lang.reflect.Proxy;
 public class ServiceProxyFactory {
 
 
-    public static <T> T getProxy(Class<T> interfaceClass){
-       RpcApplication.init();
-
-        if (RpcApplication.getRpcProperties().isMock()){
+    public static <T> T getProxy(Class<T> interfaceClass) {
+        RpcApplication.init();
+        System.out.println("获得代理对象"+TimeGetUtil.getTime());
+        if (RpcApplication.getRpcProperties().isMock()) {
             return getMockProxy(interfaceClass);
 
-        }else {
+        } else {
             return getServiceProxy(interfaceClass);
         }
     }
+
     /**
      * 创建一个代理对象，该对象实现了指定的接口。
      * <p>
