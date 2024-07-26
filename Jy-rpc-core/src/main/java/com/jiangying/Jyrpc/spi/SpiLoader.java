@@ -70,9 +70,11 @@ public class SpiLoader {
                      BufferedReader reader = new BufferedReader(inputStreamReader)) {
                     String line;
                     //为BufferedReader在读取一个完全空白的文件时，会认为文件的第一行是空字符串（""），而不是null。
+
                     while ((line = reader.readLine()) != null) {
                         String trimmedLine = line.trim();
-                        if (trimmedLine.isBlank() || trimmedLine.charAt(0) == '#') {
+                        //|| trimmedLine.charAt(0) == '#'
+                        if (trimmedLine.isBlank()) {
                             continue;
                         }
                         String[] split = trimmedLine.split("=");

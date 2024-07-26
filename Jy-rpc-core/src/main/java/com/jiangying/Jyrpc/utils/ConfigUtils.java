@@ -1,11 +1,13 @@
 package com.jiangying.Jyrpc.utils;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.dialect.Props;
 import cn.hutool.setting.yaml.YamlUtil;
+import com.jiangying.Jyrpc.config.RpcConfig;
 import com.jiangying.Jyrpc.constant.RpcConstant;
 import org.yaml.snakeyaml.Yaml;
 
@@ -42,51 +44,50 @@ public class ConfigUtils {
      * @return
      */
     public static <T> T loadConfig(Class<T> tClass, String prefix, String environment) {
-        T result = null;
+        T yamlConfig = null;
+        T propertiesConfig = null;
+
         // 构建配置文件名
         StringBuilder configFileBuilder = new StringBuilder("application");
         if (StrUtil.isNotBlank(environment)) {
             configFileBuilder.append("-").append(environment);
         }
+        // 尝试读取 properties 文件
+        String propertiesFileName = configFileBuilder.append(".properties").toString();
+        if (FileUtil.exist(propertiesFileName)) {
+            Props props = new Props(propertiesFileName);
+            propertiesConfig = props.toBean(tClass, prefix);
 
-        // 尝试读取 YAML 文件
-        String yamlFileName = configFileBuilder.append(".yml").toString();
-//      InputStream yamlStream = FileUtil.getInputStream(yamlFileName);
-//        if (yamlStream != null) {
-//            try (InputStreamReader reader = new InputStreamReader(yamlStream, StandardCharsets.UTF_8)) {
-//                // 使用 Hutool 的 YamlUtil 从 Reader 中解析 YAML 数据
-//                Dict yamlData = YamlUtil.load(reader);
-//                Object o = null;
-//                // 处理前缀
-//                if (StrUtil.isNotBlank(prefix) && yamlData.containsKey(prefix)) {
-//                     o = yamlData.get(prefix);
-//                }
-//                // 将处理后的 YAML 数据转换为指定的 Bean 类
-//                String jsonData = JSONUtil.toJsonStr(o); // 将 YAML 数据转换为 JSON 字符串
-//                return JSONUtil.toBean(jsonData, tClass); // 将 JSON 字符串转换为所需的类
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                // 适当地处理异常（例如，记录错误，重新抛出异常等）
-//            }
-
-//        }
-
-        Dict dict = YamlUtil.loadByPath(yamlFileName);
-        if (dict != null) {
-            if (StrUtil.isNotBlank(prefix) && dict.containsKey(prefix)) {
-                Object o = dict.get(prefix);
+            configFileBuilder.setLength(configFileBuilder.length() - 11);
+        }
+        // 尝试读取 YML 文件
+        String yalFileName = configFileBuilder.append(".yml").toString();
+        if (FileUtil.exist(yalFileName)) {
+            Dict ymlDict = YamlUtil.loadByPath(yalFileName);
+            if (StrUtil.isNotBlank(prefix) && ymlDict.containsKey(prefix)) {
+                Object o = ymlDict.get(prefix);
                 String data = JSONUtil.toJsonStr(o);
-                return JSONUtil.toBean(data, tClass);
+                yamlConfig = JSONUtil.toBean(data, tClass);
+                System.out.println("ymlConfig: " + yamlConfig);
+            }
+        } else {
+            // 尝试读取 YML 文件
+            configFileBuilder.setLength(configFileBuilder.length() - 4);
+            String yamlFileName = configFileBuilder.append(".yaml").toString();
+            Dict yamlDict = YamlUtil.loadByPath(yamlFileName);
+            if (yamlDict != null) {
+                if (StrUtil.isNotBlank(prefix) && yamlDict.containsKey(prefix)) {
+                    Object o = yamlDict.get(prefix);
+                    String data = JSONUtil.toJsonStr(o);
+                    yamlConfig = JSONUtil.toBean(data, tClass);
+                    System.out.println("yamlConfig: " + yamlConfig);
+                }
             }
         }
+        System.out.println("propertiesConfig:" + propertiesConfig);
+        BeanUtil.copyProperties(yamlConfig, propertiesConfig);
 
-        configFileBuilder.setLength(configFileBuilder.length() - 4);
-        String propertiesFileName = configFileBuilder.append(".properties").toString();
-
-        Props props = new Props(propertiesFileName);
-
-        return props.toBean(tClass, prefix);
-
+        return propertiesConfig;
 
     }
 

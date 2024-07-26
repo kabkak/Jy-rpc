@@ -4,6 +4,8 @@ import com.jiangying.Jyrpc.proxy.ServiceProxyFactory;
 import com.jiangying.model.User;
 import com.jiangying.service.UserService;
 
+import java.lang.reflect.Proxy;
+
 /**
  * 简单服务消费者
  */
@@ -11,6 +13,7 @@ public class EasyConsumer {
     public static void main(String[] args) {
 
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
+
 
         User user = new User("小江");
         User newUser = userService.getUser(user);
