@@ -12,15 +12,22 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
+import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
+
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ZookeeperRegister implements Register {
-    private  String ZK_ROOT_PATH = "/rpc";
-    private  CuratorFramework client;
+    private String ZK_ROOT_PATH = "/rpc";
+    private CuratorFramework client;
 
+    /**
+     * 服务缓存map
+     */
+    private final Map<String,List<ServiceMetaInfo>> registryServiceCacheMap = new ConcurrentHashMap<>();
     /**
      * 本机注册的节点 key 集合（用于维护续期）
      */
@@ -64,6 +71,7 @@ public class ZookeeperRegister implements Register {
                 .forPath(registerKey, JSONUtil.toJsonStr(serviceMetaInfo).getBytes());
 
         localRegisterNodeKeySet.add(registerKey);
+
     }
 
     @Override
@@ -105,6 +113,10 @@ public class ZookeeperRegister implements Register {
             });
             // 写入服务缓存
             registryServiceCache.writeCache(serviceMetaInfoList);
+
+            for (ServiceMetaInfo serviceMetaInfo : serviceMetaInfoList) {
+                watch(serviceMetaInfo.getServiceNodeKey());
+            }
             return serviceMetaInfoList;
         } catch (Exception e) {
             throw new RuntimeException("获取服务列表失败", e);
@@ -126,6 +138,8 @@ public class ZookeeperRegister implements Register {
         String watchKey = ZK_ROOT_PATH + "/" + serviceNodeKey;
         boolean newWatch = watchingKeySet.add(watchKey);
         if (newWatch) {
+
+
             CuratorCache curatorCache = CuratorCache.build(client, watchKey);
             curatorCache.start();
             curatorCache.listenable().addListener(

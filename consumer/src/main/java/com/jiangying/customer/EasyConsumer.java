@@ -16,12 +16,20 @@ public class EasyConsumer {
 
 
         User user = new User("小江");
-        User newUser = userService.getUser(user);
-
-        if (newUser == null){
-            System.out.println("消费者没有得到用户名");
-        }else{
-            System.out.println("消费者得到用户名字: "+user.getName());
+        //每隔0.5秒获取一次用户名
+        while (true){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            User newUser = userService.getUser(user);
+            if (newUser == null){
+                System.out.println("消费者没有得到用户名");
+            }else{
+                System.out.println("消费者得到用户名字: "+user.getName());
+            }
         }
+
     }
 }

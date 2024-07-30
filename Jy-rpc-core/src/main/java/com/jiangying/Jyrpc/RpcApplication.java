@@ -25,7 +25,7 @@ public class RpcApplication {
 
     public static void init(RpcConfig jyRpc) {
         rpcConfig = jyRpc;
-
+//todo 合并注册中心操作
 //        Register register = RegisterFactory.getRegister();
 //        register.init();
 //        Runtime.getRuntime().addShutdownHook(new Thread(new Thread(register::destroy)));

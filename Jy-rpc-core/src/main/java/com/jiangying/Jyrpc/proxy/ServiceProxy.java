@@ -59,6 +59,7 @@ public class ServiceProxy implements InvocationHandler {
         String key = rpcRequest.getServiceName() + ":" + rpcConfig.getVersion();
         List<ServiceMetaInfo> serviceMetaInfos =
                 register.serviceDiscovery(key);
+
         //todo 负载均衡
         serverHost = serviceMetaInfos.get(0).getServiceHost();
         port = serviceMetaInfos.get(0).getServicePort();
