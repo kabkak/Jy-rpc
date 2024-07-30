@@ -65,7 +65,7 @@ public class ServiceProxy implements InvocationHandler {
         port = serviceMetaInfos.get(0).getServicePort();
         serverHost = (serverHost == null ? "localhost" : serverHost);
         port = (port == null ? 8080 : port);
-        try (HttpResponse httpResponse = HttpRequest.post("Http://" + serverHost + ":" + port).body(serialized).execute();) {
+        try (HttpResponse httpResponse = HttpRequest.post("Http://" + serverHost + ":" + port).body(serialized).execute()) {
             // 从HTTP响应中获取结果数据
             byte[] result = httpResponse.bodyBytes();
             // 对结果数据进行反序列化，得到RpcResponse对象
