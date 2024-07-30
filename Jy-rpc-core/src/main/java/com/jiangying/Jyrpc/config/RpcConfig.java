@@ -1,6 +1,7 @@
 package com.jiangying.Jyrpc.config;
 
 
+import com.jiangying.Jyrpc.constant.RpcConstant;
 import lombok.Data;
 
 @Data
@@ -16,10 +17,8 @@ public class RpcConfig {
 
     private boolean mock = false; //是否开启mock
 
-    //序列化
-    private String serializer = "jdk";
-
-    private boolean register = true;
+    private String serializer = RpcConstant.DEFAULT_SERIALIZER;//序列化
 
 
+    private RegistryConfig registryConfig = new RegistryConfig();//注册中心配置
 }

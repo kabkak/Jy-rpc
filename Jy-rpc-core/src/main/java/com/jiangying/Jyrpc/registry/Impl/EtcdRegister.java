@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EtcdRegister implements Register {
     @Override
-    public void init(RegistryConfig registryConfig) {
+    public void init() {
 
     }
 

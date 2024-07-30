@@ -1,7 +1,9 @@
 package com.jiangying.Jyrpc.config;
 
+import com.jiangying.Jyrpc.constant.RpcConstant;
 import com.jiangying.Jyrpc.registry.Impl.ZookeeperRegister;
 import lombok.Data;
+import org.apache.jute.compiler.generated.RccConstants;
 
 @Data
 public class RegistryConfig {
@@ -9,12 +11,12 @@ public class RegistryConfig {
     /**
      * 注册中心类别
      */
-    private String registry = "zookeeper";
+    private String registry = RpcConstant.DEFAULT_REGISTRY;
 
     /**
      * 注册中心地址
      */
-    private String address = "http://localhost:2380";
+    private String address = "localhost:2181";
 
     /**
      * 用户名

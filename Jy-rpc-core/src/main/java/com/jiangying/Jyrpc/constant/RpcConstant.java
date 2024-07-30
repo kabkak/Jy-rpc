@@ -12,4 +12,13 @@ public interface RpcConstant {
      */
     String DEFAULT_SERVICE_VERSION = "1.0";
 
+    /**
+     * 默认序列化器jdk
+     */
+    String DEFAULT_SERIALIZER = "jdk";
+    /**
+     * 默认注册中心
+     */
+    String DEFAULT_REGISTRY = "zookeeper";
+
 }

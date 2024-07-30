@@ -1,9 +1,15 @@
 rpc:
-  name: Jyrpc
-  version: 1.0
-  serverHost: localhost
-  serverPort: 8080
+  name: "Jy-rpc"
+  version: "1.0"
+  serverHost: "localhost"
+  #rpc服务器端口
+  serverPort: 8081
+  mock: false
   serializer: jdk
-  registry:
-    host: 127.0.0.1:2181
-    post: 8080
+  #注册中心配置
+  registryConfig:
+    registry: "zookeeper"
+    address: "localhost:2181"
+#    username: "user"
+#    password: "pass"
+    timeout: 10000

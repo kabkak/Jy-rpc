@@ -11,9 +11,9 @@ public interface Register {
     /**
      * 初始化
      *
-     * @param registryConfig
+     * @param
      */
-    void init(RegistryConfig registryConfig);
+    void init();
 
     /**
      * 注册服务（服务端）

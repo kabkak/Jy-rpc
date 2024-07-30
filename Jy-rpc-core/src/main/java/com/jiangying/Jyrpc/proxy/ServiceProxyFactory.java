@@ -1,9 +1,7 @@
 package com.jiangying.Jyrpc.proxy;
 
-import com.jiangying.Jyrpc.config.RpcApplication;
-import com.jiangying.Jyrpc.config.RpcConfig;
+import com.jiangying.Jyrpc.RpcApplication;
 import com.jiangying.Jyrpc.utils.TimeGetUtil;
-import lombok.Data;
 
 import java.lang.reflect.Proxy;
 
