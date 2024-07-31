@@ -19,6 +19,8 @@ public class RpcConfig {
 
     private String serializer = RpcConstant.DEFAULT_SERIALIZER;//序列化
 
+    private String loadBalancer = RpcConstant.DEFAULT_LOAD_BALANCER;//负载均衡
+
 
     private RegistryConfig registryConfig = new RegistryConfig();//注册中心配置
 }

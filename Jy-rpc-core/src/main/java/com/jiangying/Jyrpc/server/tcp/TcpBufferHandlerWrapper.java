@@ -2,6 +2,9 @@ package com.jiangying.Jyrpc.server.tcp;
 
 
 import com.jiangying.Jyrpc.constant.ProtocolConstant;
+import com.jiangying.Jyrpc.model.RpcResponse;
+import com.jiangying.Jyrpc.protocol.ProtocolMessage;
+import com.jiangying.Jyrpc.protocol.ProtocolMessageDecoder;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.parsetools.RecordParser;
@@ -61,6 +64,7 @@ public class TcpBufferHandlerWrapper implements Handler<Buffer> {
                     resultBuffer.appendBuffer(buffer);
                     // 已拼接为完整 Buffer，执行处理
                     bufferHandler.handle(resultBuffer);
+
                     // 重置一轮
                     parser.fixedSizeMode(ProtocolConstant.MESSAGE_HEADER_LENGTH);
                     size = -1;

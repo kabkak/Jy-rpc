@@ -17,6 +17,10 @@ public interface RpcConstant {
      */
     String DEFAULT_SERIALIZER = "jdk";
     /**
+     * 默认负载均衡算法
+     */
+    String DEFAULT_LOAD_BALANCER= "consistentHash";
+    /**
      * 默认注册中心
      */
     String DEFAULT_REGISTRY = "zookeeper";

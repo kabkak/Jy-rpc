@@ -8,6 +8,7 @@ import com.jiangying.Jyrpc.registry.Register;
 import com.jiangying.Jyrpc.registry.RegisterFactory;
 import com.jiangying.Jyrpc.server.HttpServer;
 import com.jiangying.Jyrpc.server.Impl.VertxHttpServer;
+import com.jiangying.Jyrpc.server.tcp.VertxTcpServer;
 import com.jiangying.Jyrpc.utils.TimeGetUtil;
 import com.jiangying.service.UserService;
 
@@ -25,9 +26,10 @@ public class EasyProvider {
 
         System.out.println(TimeGetUtil.getTime());
 
-        HttpServer httpServer = new VertxHttpServer();
-
-        httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
+//        HttpServer httpServer = new VertxHttpServer();
+//
+//        httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
+        new VertxTcpServer().doStart(RpcApplication.getRpcProperties().getServerPort());
 
     }
 

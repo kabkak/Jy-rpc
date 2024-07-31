@@ -5,6 +5,7 @@ rpc:
   serverPort: 8081
   mock: false
   serializer: "jdk"
+  loadBalance: "random"
   registryConfig:
     registry: "zookeeper"
     address: "localhost:2181"

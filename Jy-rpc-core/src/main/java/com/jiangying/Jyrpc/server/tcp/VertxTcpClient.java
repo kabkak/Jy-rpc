@@ -25,10 +25,10 @@ public class VertxTcpClient {
         CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
         netClient.connect(metaInfo.getServicePort(), metaInfo.getServiceHost(), res -> {
             if (!res.succeeded()) {
-                System.err.println("Failed to connect to TCP server");
+                System.err.println("连接TCP服务器失败");
                 return;
             }
-            System.out.println("Connected to TCP server");
+            System.out.println("成功连接");
             NetSocket socket = res.result();
 
             // 发送数据
@@ -65,10 +65,10 @@ public class VertxTcpClient {
 
 
         });
-        System.out.println("Waiting for response");
+        System.out.println("等待回应");
         RpcResponse rpcResponse = null;
         rpcResponse = responseFuture.get(5, TimeUnit.SECONDS);
-        System.out.println("Received response");
+        System.out.println("收到回应");
         netClient.close();
         return rpcResponse;
     }

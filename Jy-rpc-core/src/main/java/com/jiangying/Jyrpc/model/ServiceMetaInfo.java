@@ -28,6 +28,11 @@ public class ServiceMetaInfo {
     private Integer servicePort;
 
     /**
+     * 权重(未实现)
+     */
+    private Integer serviceWeight;
+
+    /**
      * 服务分组（暂未实现）
      */
     private String serviceGroup = "default";

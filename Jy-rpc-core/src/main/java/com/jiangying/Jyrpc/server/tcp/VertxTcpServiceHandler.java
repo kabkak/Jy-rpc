@@ -56,7 +56,10 @@ public class VertxTcpServiceHandler implements Handler<NetSocket> {
                 throw new RuntimeException("协议消息编码错误");
             }
         });
+
+
         socket.handler(bufferHandlerWrapper);
+
     }
 }
 

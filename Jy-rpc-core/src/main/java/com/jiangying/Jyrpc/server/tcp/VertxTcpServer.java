@@ -20,19 +20,15 @@ public class VertxTcpServer implements HttpServer {
         NetServer server = vertx.createNetServer();
 
         // 处理连接请求
-        //server.connectHandler(new VertxTcpServiceHandler());
+        server.connectHandler(new VertxTcpServiceHandler());
 
-        server.connectHandler(netSocket -> {
-            netSocket.handler(buffer -> {
-
-            });
-        });
         // 启动TCP服务器并监听指定端口
         server.listen(port, res -> {
             if (res.succeeded()) {
                 System.out.println("TCP server is now listening on actual port: " + server.actualPort());
             } else {
-                System.err.println("Failed to bind!");
+                throw new RuntimeException("Failed to bind!"+server.actualPort());
+                //System.err.println("Failed to bind!");
             }
         });
     }

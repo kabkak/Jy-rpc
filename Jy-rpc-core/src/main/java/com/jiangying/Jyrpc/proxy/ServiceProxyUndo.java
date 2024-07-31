@@ -3,10 +3,7 @@ package com.jiangying.Jyrpc.proxy;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.jiangying.Jyrpc.RpcApplication;
-import com.jiangying.Jyrpc.config.RegistryConfig;
 import com.jiangying.Jyrpc.config.RpcConfig;
-import com.jiangying.Jyrpc.loadbalancer.LoadBalancer;
-import com.jiangying.Jyrpc.loadbalancer.LoadBalancerFactory;
 import com.jiangying.Jyrpc.model.RpcRequest;
 import com.jiangying.Jyrpc.model.RpcResponse;
 import com.jiangying.Jyrpc.model.ServiceMetaInfo;
@@ -14,19 +11,16 @@ import com.jiangying.Jyrpc.registry.Register;
 import com.jiangying.Jyrpc.registry.RegisterFactory;
 import com.jiangying.Jyrpc.serializer.Serializer;
 import com.jiangying.Jyrpc.serializer.SerializerFactory;
-import com.jiangying.Jyrpc.server.tcp.VertxTcpClient;
-
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * @author jiangying
  */
-public class ServiceProxy implements InvocationHandler {
+public class ServiceProxyUndo implements InvocationHandler {
 
     String serverHost;
     Integer port;
@@ -51,28 +45,43 @@ public class ServiceProxy implements InvocationHandler {
                 .serviceName(method.getDeclaringClass().getName())
                 .methodName(method.getName())
                 .parameterTypes(method.getParameterTypes())
-                .args(args).build();
+                .args(args)
+                .build();
+
+        // 对RpcRequest进行序列化
+        byte[] serialized = serializer.serialize(rpcRequest);
         RpcConfig rpcConfig = RpcApplication.getRpcProperties();
+
         Register register = RegisterFactory.getRegister();
         register.init();
-        // 从注册中心获取服务元信息列表
         String key = rpcRequest.getServiceName() + ":" + rpcConfig.getVersion();
-        List<ServiceMetaInfo> serviceMetaInfos = register.serviceDiscovery(key);
+        List<ServiceMetaInfo> serviceMetaInfos =
+                register.serviceDiscovery(key);
 
-        LoadBalancer loadBalancer = LoadBalancerFactory.getLoadBalancer();
         //todo 负载均衡
-        try {
-            new HashMap<>().put("methodName", rpcRequest.getServiceName());
-            loadBalancer.select(new HashMap<>(), serviceMetaInfos);
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, serviceMetaInfos.get(0));
-
+        serverHost = serviceMetaInfos.get(0).getServiceHost();
+        port = serviceMetaInfos.get(0).getServicePort();
+        serverHost = (serverHost == null ? "localhost" : serverHost);
+        port = (port == null ? 8080 : port);
+        try (
+                HttpResponse httpResponse = HttpRequest
+                .post("Http://" + serverHost + ":" + port)
+                .body(serialized).execute()
+        ) {
+            // 从HTTP响应中获取结果数据
+            byte[] result = httpResponse.bodyBytes();
+            // 对结果数据进行反序列化，得到RpcResponse对象
+            RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);
+            // 返回RpcResponse中的数据部分
             return rpcResponse.getData();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // 打印IO异常的堆栈跟踪
             e.printStackTrace();
-            // 如果发生异常，返回null
-            return null;
         }
-    }
 
+
+        // 如果发生异常，返回null
+        return null;
+    }
 
 }
