@@ -5,6 +5,8 @@ import cn.hutool.http.HttpResponse;
 import com.jiangying.Jyrpc.RpcApplication;
 import com.jiangying.Jyrpc.config.RegistryConfig;
 import com.jiangying.Jyrpc.config.RpcConfig;
+import com.jiangying.Jyrpc.fault.retry.RetryStrategy;
+import com.jiangying.Jyrpc.fault.retry.RetryStrategyFactory;
 import com.jiangying.Jyrpc.loadbalancer.LoadBalancer;
 import com.jiangying.Jyrpc.loadbalancer.LoadBalancerFactory;
 import com.jiangying.Jyrpc.model.RpcRequest;
@@ -63,8 +65,11 @@ public class ServiceProxy implements InvocationHandler {
         //todo 负载均衡
         try {
             new HashMap<>().put("methodName", rpcRequest.getServiceName());
-            loadBalancer.select(new HashMap<>(), serviceMetaInfos);
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, serviceMetaInfos.get(0));
+            ServiceMetaInfo serviceMetaInfo = loadBalancer.select(new HashMap<>(), serviceMetaInfos);
+            RetryStrategy retryStrategy = RetryStrategyFactory.getRetryStrategy();
+            System.out.println(serviceMetaInfo);
+            RpcResponse rpcResponse = retryStrategy.retry(() -> VertxTcpClient.doRequest(rpcRequest, serviceMetaInfo));
+            //RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, serviceMetaInfo);
 
             return rpcResponse.getData();
         } catch (Exception e) {

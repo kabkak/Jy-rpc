@@ -1,0 +1,4 @@
+noRetry=com.jiangying.Jyrpc.fault.retry.Impl.NoRetryStrategy
+exponentialBackoffRetry=com.jiangying.Jyrpc.fault.retry.Impl.ExponentialBackoffRetryStrategy
+fixedIntervalRetry=com.jiangying.Jyrpc.fault.retry.Impl.FixedIntervalRetryStrategy
+linearBackoffRetry=com.jiangying.Jyrpc.fault.retry.Impl.LinearBackoffRetryStrategy

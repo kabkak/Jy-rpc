@@ -19,10 +19,12 @@ public interface RpcConstant {
     /**
      * 默认负载均衡算法
      */
-    String DEFAULT_LOAD_BALANCER= "consistentHash";
+    String DEFAULT_LOAD_BALANCER = "consistentHash";
     /**
      * 默认注册中心
      */
     String DEFAULT_REGISTRY = "zookeeper";
+
+    String DEFAULT_RETRY_STRATEGY = "noRetry";
 
 }

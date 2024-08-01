@@ -21,6 +21,8 @@ public class RpcConfig {
 
     private String loadBalancer = RpcConstant.DEFAULT_LOAD_BALANCER;//负载均衡
 
+    private String retryStrategy = RpcConstant.DEFAULT_RETRY_STRATEGY;//重试策略
+
 
     private RegistryConfig registryConfig = new RegistryConfig();//注册中心配置
 }

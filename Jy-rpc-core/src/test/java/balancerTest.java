@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class balancerTest {
     public static void main(String[] args) {
@@ -34,5 +35,14 @@ public class balancerTest {
             System.out.println(select);
         }
 
+
+
     }
+
+    public static void test(Callable callable) throws Exception {
+        callable.call();
+
+    }
+
+
 }
