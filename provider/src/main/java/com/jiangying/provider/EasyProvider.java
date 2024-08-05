@@ -20,33 +20,33 @@ public class EasyProvider {
      * @param args
      */
     public static void main(String[] args) {
-        RpcApplication.init();
-        Register();
-        LocalRegister.register(UserService.class.getName(), UserServiceImpl.class);
+
+        Register(UserService.class.getName(), UserServiceImpl.class);
 
         System.out.println(TimeGetUtil.getTime());
-
 //        HttpServer httpServer = new VertxHttpServer();
 //
 //        httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
-        new VertxTcpServer().doStart(RpcApplication.getRpcProperties().getServerPort());
+
 
     }
 
-    private static void Register() {
+    private static void Register(String serviceName, Class<?> implClass) {
+        RpcApplication.init();
         Register register = RegisterFactory.getRegister();
         register.init();
-
+        LocalRegister.register(serviceName, implClass);
         RpcConfig rpcConfig = RpcApplication.getRpcProperties();
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
         serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
         serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
-        serviceMetaInfo.setServiceName(UserService.class.getName());
+        serviceMetaInfo.setServiceName(serviceName);
         Runtime.getRuntime().addShutdownHook(new Thread(new Thread(register::destroy)));
         try {
             register.register(serviceMetaInfo);
         } catch (Exception e) {
             throw new RuntimeException("注册失败");
         }
+        new VertxTcpServer().doStart(RpcApplication.getRpcProperties().getServerPort());
     }
 }

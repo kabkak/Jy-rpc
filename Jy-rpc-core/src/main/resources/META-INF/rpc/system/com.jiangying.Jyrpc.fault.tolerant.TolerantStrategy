@@ -1,0 +1,3 @@
+failFast=com.jiangying.Jyrpc.fault.tolerant.Impl.FailFastTolerantStrategy
+failSilent=com.jiangying.Jyrpc.fault.tolerant.Impl.FailSilentTolerantStrategy
+failOver=com.jiangying.Jyrpc.fault.tolerant.Impl.FailOverTolerantStrategy

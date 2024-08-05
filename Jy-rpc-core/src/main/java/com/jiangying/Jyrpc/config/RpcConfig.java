@@ -23,6 +23,8 @@ public class RpcConfig {
 
     private String retryStrategy = RpcConstant.DEFAULT_RETRY_STRATEGY;//重试策略
 
+    private String TolerantStrategy = RpcConstant.DEFAULT_TOLERANT_STRATEGY; //容错机制
+
 
     private RegistryConfig registryConfig = new RegistryConfig();//注册中心配置
 }

@@ -6,6 +6,8 @@ rpc:
   mock: false
   serializer: "jdk"
   loadBalance: "random"
+  retryStrategy: "noRetry"
+  TolerantStrategy: "failFast"
   registryConfig:
     registry: "zookeeper"
     address: "localhost:2181"

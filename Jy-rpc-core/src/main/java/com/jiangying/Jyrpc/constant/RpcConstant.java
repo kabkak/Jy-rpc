@@ -25,6 +25,13 @@ public interface RpcConstant {
      */
     String DEFAULT_REGISTRY = "zookeeper";
 
+    /**
+     * 默认重试策略
+     */
     String DEFAULT_RETRY_STRATEGY = "noRetry";
 
+    /**
+     * 默认容错机制
+     */
+    String DEFAULT_TOLERANT_STRATEGY = "failFast";
 }
