@@ -9,7 +9,7 @@ public class RpcConsumerBootstrap implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (beanName == "exampleSpringbootConsumerApplication"){
-            System.out.println("beanName:"+beanName);
+            System.out.println("beanName:   "+beanName);
         }
         Class<?> beanClass = bean.getClass();
         Field[] fields = beanClass.getDeclaredFields();

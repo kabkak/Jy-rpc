@@ -1,2 +1,3 @@
 etcd=com.jiangying.Jyrpc.registry.Impl.EtcdRegister
 zookeeper=com.jiangying.Jyrpc.registry.Impl.ZookeeperRegister
+redis=com.jiangying.Jyrpc.registry.Impl.RedisRegister

@@ -12,7 +12,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
-import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 
@@ -21,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ZookeeperRegister implements Register {
-    private String ZK_ROOT_PATH = "/rpc";
+    private String ROOT_PATH = "/rpc";
     private CuratorFramework client;
 
     /**
@@ -51,19 +50,15 @@ public class ZookeeperRegister implements Register {
                 .connectString(registryConfig.getAddress())
                 .retryPolicy(new ExponentialBackoffRetry(Math.toIntExact(registryConfig.getTimeout()), 3))
                 .build();
-        ZK_ROOT_PATH = ZK_ROOT_PATH + "/" + registryConfig.getRegistry();
+        ROOT_PATH = ROOT_PATH + "/" + registryConfig.getRegistry();
         client.start();
-        try {
-            //serviceDiscovery.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
 
     }
 
     @Override
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
-        String registerKey = ZK_ROOT_PATH + "/" + serviceMetaInfo.getServiceNodeKey();
+        String registerKey = ROOT_PATH + "/" + serviceMetaInfo.getServiceNodeKey();
 
         // 注册到 zk 里
         client.create().creatingParentContainersIfNeeded()
@@ -76,7 +71,7 @@ public class ZookeeperRegister implements Register {
 
     @Override
     public void unRegister(ServiceMetaInfo serviceMetaInfo) {
-        String registerKey = ZK_ROOT_PATH + "/" + serviceMetaInfo.getServiceNodeKey();
+        String registerKey = ROOT_PATH + "/" + serviceMetaInfo.getServiceNodeKey();
         try {
             client.delete().guaranteed().forPath(registerKey);
         } catch (Exception e) {
@@ -97,12 +92,12 @@ public class ZookeeperRegister implements Register {
         try {
 
             //client.checkExists().forPath(ZK_ROOT_PATH + "/" + serviceKey);
-            List<String> list = client.getChildren().forPath(ZK_ROOT_PATH + "/" + serviceKey);
+            List<String> list = client.getChildren().forPath(ROOT_PATH + "/" + serviceKey);
             List<ServiceMetaInfo> serviceMetaInfoList = new ArrayList<>();
             list.forEach(url -> {
                 try {
                     ///rpc/zookeeper/com.jiangying.service.UserService:1.0/localhost:8081
-                    String path = ZK_ROOT_PATH + "/" + serviceKey + "/" + url;
+                    String path = ROOT_PATH + "/" + serviceKey + "/" + url;
                     byte[] bytes = client.getData().forPath(path);
                     String json = new String(bytes);
                     ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(json, ServiceMetaInfo.class);
@@ -135,7 +130,7 @@ public class ZookeeperRegister implements Register {
      */
     @Override
     public void watch(String serviceNodeKey) {
-        String watchKey = ZK_ROOT_PATH + "/" + serviceNodeKey;
+        String watchKey = ROOT_PATH + "/" + serviceNodeKey;
         boolean newWatch = watchingKeySet.add(watchKey);
         if (newWatch) {
 

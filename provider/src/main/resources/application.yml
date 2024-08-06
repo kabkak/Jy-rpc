@@ -8,8 +8,9 @@ rpc:
   serializer: jdk
   #注册中心配置
   registryConfig:
-    registry: "zookeeper"
-    address: "localhost:2181"
+    registry: "redis"
+#   address: "localhost:2181"
+    address: "localhost:6379"
 #    username: "user"
 #    password: "pass"
     timeout: 10000
