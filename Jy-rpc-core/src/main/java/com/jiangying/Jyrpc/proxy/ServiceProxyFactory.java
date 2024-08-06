@@ -12,8 +12,8 @@ public class ServiceProxyFactory {
 
 
     public static <T> T getProxy(Class<T> interfaceClass) {
-        RpcApplication.init();
-        System.out.println("获得代理对象"+TimeGetUtil.getTime());
+
+        System.out.println("为"+interfaceClass+"获得代理对象"+TimeGetUtil.getTime());
         if (RpcApplication.getRpcProperties().isMock()) {
             return getMockProxy(interfaceClass);
 

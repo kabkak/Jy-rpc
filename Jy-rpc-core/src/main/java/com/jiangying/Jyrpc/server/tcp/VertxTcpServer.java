@@ -28,7 +28,6 @@ public class VertxTcpServer implements HttpServer {
                 System.out.println("TCP server is now listening on actual port: " + server.actualPort());
             } else {
                 throw new RuntimeException("Failed to bind!"+server.actualPort());
-                //System.err.println("Failed to bind!");
             }
         });
     }

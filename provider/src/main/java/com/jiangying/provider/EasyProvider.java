@@ -1,16 +1,19 @@
 package com.jiangying.provider;
 
+import com.jiangying.Jyrpc.Bootstrap.ProviderBootstrap;
 import com.jiangying.Jyrpc.RpcApplication;
 import com.jiangying.Jyrpc.config.RpcConfig;
 import com.jiangying.Jyrpc.model.ServiceMetaInfo;
 import com.jiangying.Jyrpc.registry.LocalRegister;
 import com.jiangying.Jyrpc.registry.Register;
 import com.jiangying.Jyrpc.registry.RegisterFactory;
-import com.jiangying.Jyrpc.server.HttpServer;
-import com.jiangying.Jyrpc.server.Impl.VertxHttpServer;
+import com.jiangying.Jyrpc.registry.ServiceRegisterInfo;
 import com.jiangying.Jyrpc.server.tcp.VertxTcpServer;
 import com.jiangying.Jyrpc.utils.TimeGetUtil;
 import com.jiangying.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EasyProvider {
@@ -20,14 +23,13 @@ public class EasyProvider {
      * @param args
      */
     public static void main(String[] args) {
+        List<ServiceRegisterInfo<?>> serviceRegisterInfoList = new ArrayList<>();
+        ServiceRegisterInfo<?> serviceRegisterInfo = new ServiceRegisterInfo<>(UserService.class.getName(), UserServiceImplUndo.class);
+        serviceRegisterInfoList.add(serviceRegisterInfo);
 
-        Register(UserService.class.getName(), UserServiceImpl.class);
+        ProviderBootstrap.init(serviceRegisterInfoList);
 
         System.out.println(TimeGetUtil.getTime());
-//        HttpServer httpServer = new VertxHttpServer();
-//
-//        httpServer.doStart(RpcApplication.getRpcProperties().getServerPort());
-
 
     }
 
