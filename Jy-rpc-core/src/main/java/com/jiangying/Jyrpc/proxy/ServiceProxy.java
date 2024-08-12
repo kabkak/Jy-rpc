@@ -73,7 +73,7 @@ public class ServiceProxy implements InvocationHandler {
         RetryStrategy retryStrategy = RetryStrategyFactory.getRetryStrategy();
         System.out.println(serviceMetaInfo);
 
-        register.heartBeat();
+
 
         try {
             //重试

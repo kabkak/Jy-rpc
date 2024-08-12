@@ -9,6 +9,7 @@ rpc:
   #注册中心配置
   registryConfig:
     registry: "redis"
+#    registry: "zookeeper"
 #   address: "localhost:2181"
     address: "localhost:6379"
 #    username: "user"

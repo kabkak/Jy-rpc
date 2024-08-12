@@ -21,6 +21,7 @@ public class RpcApplication {
             newRpcConfig = new RpcConfig();
         }
         init(newRpcConfig);
+
     }
 
     public static void init(RpcConfig jyRpc) {

@@ -144,7 +144,9 @@ public class ZookeeperRegister implements Register {
                             .forChanges(((oldNode, node) -> registryServiceCache.clearCache()))
                             .build()
             );
+
         }
+
     }
 
     @Override
