@@ -30,8 +30,16 @@ public class RpcProviderBootstrap implements BeanPostProcessor {
             serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
             serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
             serviceMetaInfo.setServiceVersion(rpcConfig.getVersion());
-            Register register = RegisterFactory.getRegister();
+            final Register register = RegisterFactory.getRegister();
             register.init();
+            //register::destroy
+            Runtime.getRuntime().addShutdownHook(new Thread(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    register.destroy();
+                }
+            }
+            )));
             try {
                 register.register(serviceMetaInfo);
             } catch (Exception e) {
