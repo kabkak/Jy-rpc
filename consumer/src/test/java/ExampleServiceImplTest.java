@@ -1,3 +1,4 @@
+import cn.hutool.cron.CronUtil;
 import com.jiangying.ExampleSpringbootConsumerApplication;
 import com.jiangying.customer.ExampleServiceImpl;
 
@@ -14,6 +15,7 @@ class ExampleServiceImplTest {
 
     @Test
     void test() {
+        CronUtil.stop();
         exampleService.test();
     }
 

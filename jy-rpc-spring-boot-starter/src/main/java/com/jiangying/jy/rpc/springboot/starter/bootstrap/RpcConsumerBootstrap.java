@@ -8,9 +8,7 @@ import java.lang.reflect.Field;
 public class RpcConsumerBootstrap implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
-        if (beanName == "exampleSpringbootConsumerApplication"){
-            System.out.println("beanName:   "+beanName);
-        }
+
         Class<?> beanClass = bean.getClass();
         Field[] fields = beanClass.getDeclaredFields();
         for (Field field : fields) {

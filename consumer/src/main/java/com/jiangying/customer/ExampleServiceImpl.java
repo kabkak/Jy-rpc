@@ -11,8 +11,18 @@ public class ExampleServiceImpl {
     private UserService userService;
 
     public void test() {
+
+
         User user = new User("小江");
-        User resultUser = userService.getUser(user);
-        System.out.println("consumer get User:" + resultUser.getName());
+        while (true){
+            User resultUser = userService.getUser(user);
+            System.out.println("consumer get User:" + resultUser.getName());
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 }

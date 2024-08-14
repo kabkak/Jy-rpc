@@ -9,8 +9,11 @@ rpc:
   retryStrategy: "noRetry"
   TolerantStrategy: "failFast"
   registryConfig:
-    registry: "zookeeper"
-    address: "localhost:2181"
-    username: "user"
-    password: "pass"
+    registry: "redis"
+    #    registry: "zookeeper"
+    #   address: "localhost:2181"
+    address: "localhost:6379"
+    #    username: "user"
+    #    password: "pass"
     timeout: 10000
+

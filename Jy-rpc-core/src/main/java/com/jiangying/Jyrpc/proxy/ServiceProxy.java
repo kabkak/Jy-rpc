@@ -61,7 +61,7 @@ public class ServiceProxy implements InvocationHandler {
 
         // 从注册中心获取服务元信息列表
         Register register = RegisterFactory.getRegister();
-        register.init();
+        //register.init();
         String key = rpcRequest.getServiceName() + ":" + rpcConfig.getVersion();
         List<ServiceMetaInfo> serviceMetaInfos = register.serviceDiscovery(key);
 

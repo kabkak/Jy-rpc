@@ -14,8 +14,6 @@ import java.util.List;
 public class ProviderBootstrap {
     public static void init(List<ServiceRegisterInfo<?>> serviceRegisterInfoList) {
         RpcApplication.init();
-        Register register = RegisterFactory.getRegister();
-        register.init();
         //服务注册
         for (ServiceRegisterInfo<?> serviceRegisterInfo : serviceRegisterInfoList) {
             Class<?> implClass = serviceRegisterInfo.getImplClass();
@@ -27,12 +25,6 @@ public class ProviderBootstrap {
             serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
             serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
             serviceMetaInfo.setServiceName(serviceName);
-            Runtime.getRuntime().addShutdownHook(new Thread(new Thread(register::destroy)));
-            try {
-                register.register(serviceMetaInfo);
-            } catch (Exception e) {
-                throw new RuntimeException("注册失败");
-            }
         }
        //启动服务器
         new VertxTcpServer().doStart(RpcApplication.getRpcProperties().getServerPort());
